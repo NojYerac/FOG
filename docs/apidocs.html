@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="http://s3.amazonaws.com/assets.sunlightfoundation.com/capitol-words/media/css/bootstrap.min.css" media="screen, projection">
+        <style type="text/css">
+        hr{padding:0 0 20px;}
+        ul ul{margin-bottom:1em}
+        pre code{background-color:inherit;}
+        </style>
+        <script src="http://s3.amazonaws.com/assets.sunlightfoundation.com/capitol-words/media/js/google-analytics.js"></script>
+        
+        
+    </head>
+
+    <body>
+        
+        <div class="topbar-wrapper">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="container">
+                        <h3><a href="#">Capitol Words API</a></h3>
+                        <ul class="nav">
+                            
+    <li><a href="#standard-arguments">Standard arguments</a></li>
+    <li><a href="#dates.json">dates.json</a></li>
+    <li><a href="#phrases.json">phrases.json</a></li>
+    <li><a href="#phrases/entity.json">phrases/{entity}.json</a></li>
+    <li><a href="#text.json">text.json</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container" style="padding-top:60px;">
+        
+    <h2>Getting started</h2>
+<p>Listed below are the public methods currently supported by the Capitol Words API. All requests must be signed with a valid Sunlight labs API key. You can register for one here: <a href="http://services.sunlightlabs.com/accounts/register">http://services.sunlightlabs.com/accounts/register</a></p>
+<h3>Discussion &amp; Bugs</h3>
+<p>Sunlight API discussion takes place at the <a href="https://groups.google.com/forum/#!forum/sunlightlabs-api-discuss">sunlightlabs-api-discuss google group</a>. You can ask questions there, as well as alert the maintainers of bugs. If you have specific issues with the Capitol Words API, you can open a ticket directly at <a href="http://github.com/sunlightlabs/Capitol-Words/issues">github</a>.</p>
+<h3>Endpoints</h3>
+<p>All endpoints below are relative to this page, the API root. So, to make a request to the dates.json endpoint, you'd use the url <code>http://capitolwords.org/api/1/dates.json?apikey=&lt;YOUR_KEY&gt;</code>.</p>
+<p><a id="standard-arguments"></a></p>
+<hr />
+<h2>Standard arguments</h2>
+<p>All of the endpoints pulling from Solr support a set of standard arguments,
+all of which are optional. Endpoints with support for standard arguments will
+be flagged as such below.</p>
+<ul>
+<li>
+<p><code>state</code></p>
+<p>Limit results to members of Congress from the given state.</p>
+<p>Valid values: 2-letter state abbreviation, such as MD, VA, DC.</p>
+</li>
+<li>
+<p><code>party</code></p>
+<p>Limit results to members of Congress from the given party.</p>
+<p>Valid values: R, D, I</p>
+</li>
+<li>
+<p><code>chamber</code></p>
+<p>The chamber to search. Default includes House, Senate and extensions of
+remarks.</p>
+<p>Valid values:</p>
+<ul>
+<li>house</li>
+<li>senate</li>
+<li>extensions</li>
+</ul>
+</li>
+<li>
+<p><code>date</code></p>
+<p>Show results for only the given date.</p>
+</li>
+<li>
+<p><code>start_date</code></p>
+<p>Limit results to those on or after the given date.</p>
+</li>
+<li>
+<p><code>end_date</code></p>
+<p>Limit results to those on or before the given date.</p>
+</li>
+</ul>
+<p><a id="dates.json"></a></p>
+<hr />
+<h2>dates.json</h2>
+<p>Find the popularity of a phrase over a period of time. Standard arguments are supported.</p>
+<h3>Required arguments</h3>
+<ul>
+<li>
+<p><code>phrase</code></p>
+<p>The phrase to search for.</p>
+</li>
+</ul>
+<h3>Optional arguments</h3>
+<ul>
+<li>
+<p><code>bioguide</code></p>
+<p>Limit results to the member of Congress with the given Bioguide ID.</p>
+</li>
+<li>
+<p><code>mincount</code></p>
+<p>Only return results where mentions are at or above the supplied threshold</p>
+</li>
+<li>
+<p><code>percentages</code></p>
+<p>Include the percentage of mentions versus total words in the result
+objects.</p>
+<p>Valid values: true, <strong>false</strong> (default).</p>
+</li>
+<li>
+<p><code>granularity</code></p>
+<p>The length of time covered by each result.</p>
+<p>Valid values:</p>
+<ul>
+<li>year</li>
+<li>month</li>
+<li><strong>day</strong> (default)</li>
+</ul>
+</li>
+</ul>
+<h3>Examples</h3>
+<ul>
+<li>
+<p>Get a list of how many times the phrase "united states" appears in the
+  Congressional Record on each day in the most recent Congress:</p>
+<p><code>dates.json?phrase=united+states&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>Get a list of how many times the phrase "united states" was said by
+  legislators from Virginia on each day of the most recent Congress:</p>
+<p><code>dates.json?phrase=united+states&amp;entity_type=state&amp;entity_value=VA&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>Get a list of how many times the phrase "united States" appears in the
+  Congressional Record on each day between Jan. 1, 2010, and June 1, 2010:</p>
+<p><code>dates.json?phrase=united+states&amp;start_date=2009-01-01&amp;end_date=2009-06-01&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>Get a list of how many times the phrase "united states" appears in the Congressional Record in each month between January and June, 2010:</p>
+<p><code>dates.json?phrase=united+states&amp;start_date=2009-01-01&amp;end_date=2009-04-30&amp;granularity=month&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+</ul>
+<h3>Results</h3>
+<p>Returns a list of date objects with associated mention data</p>
+<pre><code>{
+    "results": [
+        {
+            "count": 14.0,
+            "percentage": 0.058309037900874633,
+            "total": 24010,
+            "day": "1996-01-02",
+            "raw_count": 14.0
+        },
+        {
+            "count": 122.0,
+            "percentage": 0.067791336044986786,
+            "total": 179964,
+            "day": "1996-01-04",
+            "raw_count": 122.0
+        },
+        {
+            "count": 198.0,
+            "percentage": 0.13499693188791165,
+            "total": 146670,
+            "day": "1996-01-05",
+            "raw_count": 198.0
+        },
+        {
+            "count": 1.0,
+            "percentage": 0.098135426889106966,
+            "total": 1019,
+            "day": "1996-01-08",
+            "raw_count": 1.0
+        },
+        ...
+    ]
+}
+</code></pre>
+<p><a id="phrases.json"></a></p>
+<hr />
+<h2>phrases.json</h2>
+<p>List the top phrases for a facet.</p>
+<h3>Required arguments</h3>
+<ul>
+<li>
+<p><code>entity_type</code></p>
+<p>The entity type to get top phrases for.</p>
+<p>Valid values:</p>
+<ul>
+<li>date</li>
+<li>month</li>
+<li>state</li>
+<li>legislator</li>
+</ul>
+</li>
+<li>
+<p><code>entity_value</code></p>
+<p>The value of the entity given in entity_type. Formats are as follows:</p>
+<ul>
+<li><strong>date:</strong> 2011-11-09</li>
+<li><strong>month:</strong> 201111</li>
+<li><strong>state:</strong> NY</li>
+<li><strong>legislator (bioguide):</strong> L000551</li>
+</ul>
+</li>
+</ul>
+<h3>Optional arguments</h3>
+<ul>
+<li>
+<p><code>n</code></p>
+<p>The size of phrase, in words, to search for (up to 5).</p>
+</li>
+<li>
+<p><code>page</code></p>
+<p>The page of results to show.</p>
+<p>100 results are shown at a time. To get more than 100 results, use the
+page parameter.</p>
+</li>
+<li>
+<p><code>sort</code></p>
+<p>The metric and direction to sort by.</p>
+<p>Valid values:</p>
+<ul>
+<li><strong>tfidf</strong> (default)</li>
+<li>count</li>
+</ul>
+<p>Both a metric and direction must be supplied, such as 'sort=count asc'</p>
+</li>
+</ul>
+<h3>Examples</h3>
+<ul>
+<li>
+<p>List the top words in July 2010 by count:</p>
+<p><code>/phrases.json?entity_type=month&amp;entity_value=201007&amp;sort=count+desc&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>List the top words for Nevada:</p>
+<p><code>/phrases.json?entity_type=state&amp;entity_value=NV&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>List the top words for Barbara Lee:</p>
+<p><code>/phrases.json?entity_type=legislator&amp;entity_value=L000551&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+</ul>
+<h3>Results</h3>
+<p>Returns a list of phrases with tf-idf and count data</p>
+<pre><code>[
+    {
+        "tfidf": 3.8596557124800003e-05,
+        "count": 5373,
+        "ngram": "people"
+    },
+    {
+        "tfidf": 1.30267768302e-05,
+        "count": 3637,
+        "ngram": "one"
+    },
+    {
+        "tfidf": 2.52066478599e-05,
+        "count": 3509,
+        "ngram": "jobs"
+    },
+    {
+        "tfidf": 1.17409333103e-05,
+        "count": 3278,
+        "ngram": "american"
+    },
+    ...
+]
+</code></pre>
+<p><a id="phrases/entity.json"></a></p>
+<hr />
+<h2>phrases/{entity}.json</h2>
+<p>Get the top (legislator|state|party|bioguide_id|volume|chamber)s for a
+phrase. Standard arguments are supported.</p>
+<h3>Required arguments</h3>
+<ul>
+<li>
+<p><code>phrase</code></p>
+<p>The phrase to search for.</p>
+</li>
+</ul>
+<h3>Optional arguments</h3>
+<ul>
+<li>
+<p><code>mincount</code></p>
+<p>Only return results where mentions are at or above the supplied threshold</p>
+</li>
+<li>
+<p><code>per_page</code></p>
+<p>The number of results to return per page. The maximum is 50.</p>
+</li>
+<li>
+<p><code>page</code></p>
+<p>The page number to return.</p>
+</li>
+<li>
+<p><code>sort</code></p>
+<p>The metric on which to sort top results.
+<strong>Note: Facet sorts in Solr are alphabetically ascending by facet or descending
+by count. The only valid values you can provide are 'count' or {entity}.</strong></p>
+</li>
+</ul>
+<h2>Examples</h2>
+<ul>
+<li>
+<p>List the top 10 legislators for the phrase 'free market' by raw count:</p>
+<p><code>/phrases/legislator.json?phrase=free+market&amp;sort=count&amp;per_page=10&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>Find the chamber that says 'salary increase' the most:</p>
+<p><code>/phrases/chamber.json?phrase=salary+increase&amp;sort=count&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+</ul>
+<h3>Results</h3>
+<p>Returns a list of <em>entity</em> objects with associated count data</p>
+<pre><code>{
+    "results": [
+        {
+            "count": 41.0,
+            "chamber": "House"
+        },
+        {
+            "count": 35.0,
+            "chamber": "Senate"
+        },
+        {
+            "count": 9.0,
+            "chamber": "Extensions"
+        }
+    ]
+}
+</code></pre>
+<p><a id="text.json"></a></p>
+<hr />
+<h2>text.json</h2>
+<p>Full-text search. Standard arguments are supported</p>
+<h3>Required arguments</h3>
+<p>No single argument is required to this endpoint; however, at least one of the text search arguments should be supplied.</p>
+<h3>Text search arguments</h3>
+<ul>
+<li>
+<p><code>phrase</code></p>
+<p>A phrase to search the body of each CR document for.</p>
+</li>
+<li>
+<p><code>title</code></p>
+<p>A phrase to search the title of each CR document for.</p>
+</li>
+</ul>
+<h3>Optional arguments</h3>
+<ul>
+<li>
+<p><code>bioguide</code></p>
+<p>Limit results to the member of Congress with the given Bioguide ID.</p>
+</li>
+<li>
+<p><code>cr_pages</code></p>
+<p>The pages in the Congressional Record to search.</p>
+</li>
+<li>
+<p><code>page</code></p>
+<p>The page of results to show, 100 results are shown at a time.</p>
+</li>
+</ul>
+<h3>Examples</h3>
+<ul>
+<li>
+<p>Get a list of pieces of text with the phrase "obama administration" in them:</p>
+<p><code>/text.json?phrase=obama+administration&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+<li>
+<p>Get a list of pieces of text by Republicans with the phrase "health care debate" in them:</p>
+<p><code>/text.json?phrase=health+care+debate&amp;party=R&amp;apikey=&lt;YOUR_KEY&gt;</code></p>
+</li>
+</ul>
+<h3>Results</h3>
+<p>Returns a list of CR Documents and the total number found</p>
+<pre><code>{
+    "num_found": 347,
+    "results": [
+        {
+            "speaker_state": "NC",
+            "speaker_first": "Virginia",
+            "congress": 111,
+            "title": "CULTIVATING AMERICAN ENERGY RESOURCES",
+            "origin_url": "http://origin.www.gpo.gov/fdsys/pkg/CREC-2009-07-30/html/CREC-2009-07-30-pt1-PgH9197.htm",
+            "number": 117,
+            "pages": "H9197-H9203",
+            "volume": 155,
+            "chamber": "House",
+            "session": 1,
+            "speaking": [
+                "Well, I think that this is a great segue to talk about the other subject that we wanted to talk about tonight, which is health care, and what is happening with the health care debate."
+            ],
+            "capitolwords_url": "http://capitolwords.org/date/2009/07/30/H9197_cultivating-american-energy-resources/",
+            "speaker_party": "R",
+            "date": "2009-07-30",
+            "bills": null,
+            "bioguide_id": "F000450",
+            "order": 14,
+            "speaker_last": "Foxx",
+            "speaker_raw": "ms. foxx"
+        },
+        ...
+    ]
+}
+</code></pre>
+
+        </div>
+    </body>
+</html>
