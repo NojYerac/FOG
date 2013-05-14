@@ -1,0 +1,43 @@
+USAGE:
+fog_request.py [OPTIONS] [PHRASE]
+
+SYNOPSIS:
+
+Free & Open Government (FOG) is an app that generates reports & graphs
+based on keywords.  It pulls data from the capitolwords.org API.
+
+When executed directly, this script prints parsed json data directly to stdout.
+
+OPTIONS:
+
+-h --help, display docs
+
+-c --cache-dir=CACHE_DIR, default is /tmp/cache/
+
+-e --endpoint=ENDPOINT default is 'text.json'
+ dates.json
+ phrases.json
+ phrases/{entity}.json {legislator|state|party|bioguide_id|volume|chamber}
+ text.json
+
+-k --api-key-file=PATH/TO/FILE, default is ./api.key
+
+-u --url=BASE_URL, default is 'http://capitolwords.org/api/1'
+
+STANDARD OPTIONS:
+
+--state=ABBRV (i.e.: TX)
+
+--party=R|D|I
+
+--chamber=house|senate|extentions
+
+--date=DATE (YYYY-MM-DD)
+
+--start_date=DATE
+
+--end_date=DATE
+
+--json=PATH/TO/FILE.json (pass in additional val:arg pairs)
+
+Read the full API spec at: http://capitolwords.org/api/1
