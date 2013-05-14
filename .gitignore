@@ -3,3 +3,4 @@ api.key
 \#*\#
 .\#*
 .cache/*
+__pycache__/*
