@@ -141,19 +141,19 @@ if __name__ == '__main__':
         failout(err)
     data = {}
     for o, a in opts:
-        if opt in ('-c', '--cache-dir'):
+        if o in ('-c', '--cache-dir'):
             CACHE_DIR = a
-        elif opt in ('-e', '--endpoint'):
+        elif o in ('-e', '--endpoint'):
             ENDPOINT = a
-        elif opt in ('-h', '--help'):
+        elif o in ('-h', '--help'):
             usage()
             exit(0)
-        elif opt in ('-k', '--api-key-file'):
+        elif o in ('-k', '--api-key-file'):
             API_LOC = os.path.expanduser(a)
-        elif opt in ('--state', '--party', '--chamber',
+        elif o in ('--state', '--party', '--chamber',
                      '--date', '--start_date', '--end_date'):
             data[opt[2:]] = a
-        elif opt == '--json':
+        elif o == '--json':
             with open(os.path.expanduser(a), 'rt') as json_file:
                 data.update(json.load(json_file))
     if args:
