@@ -14,7 +14,7 @@ OPTIONS:
 
 -h --help, display docs
 
--c --cache-dir=CACHE_DIR, default is /tmp/cache/
+-c --cache-dir=CACHE_DIR, default is /tmp/fog_cache/
 
 -e --endpoint=ENDPOINT default is 'text.json'
  dates.json
@@ -63,12 +63,12 @@ class FOGRequest():
         with open(api_loc, 'rt') as apikey_file:
             self.apikey = apikey_file.read(32)
         self.cache_dir = cache_dir
-        self.url = '%s/%s' % (base_url, endpoint)
+        self.url = '{}/{}'.format(base_url, endpoint)
         self.modifyData(apikey=self.apikey)
         self.urlEncodeData()
         
     def urlEncodeData(self):
-        self.url_data = '%s?%s' % (self.url, urlencode(self.data))
+        self.url_data = '{}?{}'.format(self.url, urlencode(self.data))
         self.md5_digest = self.getHash()
         
     def modifyData(self, **new_data):
@@ -105,11 +105,11 @@ class FOGRequest():
         except HTTPError as err:
              message = """
             This request:
-            %s
+            {}
             
             Yeilded this error:
-            %s
-             """ % (self.url_data, err)
+            {}
+             """.format(self.url_data, err)
              failout(message)
         return self.result
 
@@ -119,7 +119,6 @@ class FOGRequest():
    
 def failout(message):
     print(message, file = sys.stderr)
-    usage()
     exit(1)
 
 def usage():
@@ -152,7 +151,7 @@ if __name__ == '__main__':
             API_LOC = os.path.expanduser(a)
         elif o in ('--state', '--party', '--chamber',
                      '--date', '--start_date', '--end_date'):
-            data[opt[2:]] = a
+            data[o[2:]] = a
         elif o == '--json':
             with open(os.path.expanduser(a), 'rt') as json_file:
                 data.update(json.load(json_file))
